@@ -3,11 +3,10 @@ from random import randint
 print "Welcome to Animal Guess! Here we will give you clues and you will try to tell us what animal we are thinking."
 print "Five clues, five guesses, give it a shot!"
 
-first_question = ["First clue: Some would guess my hearing is better than most\t",
-                  "I walk in a different way than most\t",
-                  "I eat things that make me a good role model for humans\t",
-                  "There are songs about the way I move\t",
-                  "A certain holiday would lead one to believe I do a lot with eggs.\t"]
+def load_question():
+    with open("questions/Rabbit") as f:
+        content = f.readlines()
+    return content
 
 second_question = ["First clue: I eat\t",
                   "I drink\t",
@@ -27,29 +26,27 @@ random_retries = ["Not quite.",
                   "Don't give up. Keep guessing."]
 
 
-def ask_question(question_num, correct_answer):
-    count = 0
-    answer = raw_input(question_num[count]).lower()
-    hint_num = 1
-    while count <= 4 and hint_num <=5:
-        hint_num += 1
-        count += 1
+def ask_question(question, correct_answer):
+    count = 1
+    answer = raw_input(question[count]).lower()
+    while count <= 4:
         if answer == correct_answer:
             print random_responses[randint(0,len(random_responses)-1)]
             break
         else:
-            if hint_num == 5:
+            if count == 4:
                 print random_retries[randint(0,len(random_retries)-1)] + " Last clue..."
             else:
-                print random_retries[randint(0,len(random_retries)-1)] + " Clue " + str(hint_num) + "..."
+                print random_retries[randint(0,len(random_retries)-1)] + " Clue " + str(count +1) + "..."
 
 
-        answer = raw_input(question_num[count]).lower()
+        answer = raw_input(question[count]).lower()
+        count += 1
     else:
         print "It was a %s! Thanks for Playing" % correct_answer
 
 
-ask_question(first_question, "rabbit")
+ask_question(load_question(), "rabbit")
 
 print "Alright, let's try another"
 
