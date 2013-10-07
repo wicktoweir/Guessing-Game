@@ -38,7 +38,11 @@ def ask_question(question_num, correct_answer):
             print random_responses[randint(0,len(random_responses)-1)]
             break
         else:
-            print random_retries[randint(0,len(random_retries)-1)]
+            if hint_num == 5:
+                print random_retries[randint(0,len(random_retries)-1)] + " Last clue..."
+            else:
+                print random_retries[randint(0,len(random_retries)-1)] + " Clue " + str(hint_num) + "..."
+
 
         answer = raw_input(question_num[count]).lower()
     else:
