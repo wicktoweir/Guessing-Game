@@ -1,18 +1,16 @@
+import random
+import os
 from random import randint
 
-print "Welcome to Animal Guess! Here we will give you clues and you will try to tell us what animal we are thinking."
+print "Welcome to Animal Guess! Here we will give you clues and you will try to tell us what type of animal we are thinking. No specifics, just generic animal name such as goat."
 print "Five clues, five guesses, give it a shot!"
 
-def load_question():
-    with open("questions/Rabbit") as f:
+def load_question(question):
+    with open("questions/%s" % question) as f:
         content = f.readlines()
     return content
 
-second_question = ["First clue: I eat\t",
-                  "I drink\t",
-                  "I love\t",
-                  "I fart\t",
-                  "I poo.\t"]
+
 
 random_responses = ["You got it!",
                     "Good job, that's it!",
@@ -27,30 +25,32 @@ random_retries = ["Not quite.",
 
 
 def ask_question(question, correct_answer):
-    count = 1
-    answer = raw_input(question[count]).lower()
+    count = 0
     while count <= 4:
+        answer = raw_input(question[count]).lower()
         if answer == correct_answer:
             print random_responses[randint(0,len(random_responses)-1)]
             break
         else:
-            if count == 4:
+            if count == 3:
                 print random_retries[randint(0,len(random_retries)-1)] + " Last clue..."
             else:
-                print random_retries[randint(0,len(random_retries)-1)] + " Clue " + str(count +1) + "..."
+                print random_retries[randint(0,len(random_retries)-1)] + " Clue " + str(count + 2) + "..."
 
-
-        answer = raw_input(question[count]).lower()
         count += 1
     else:
         print "It was a %s! Thanks for Playing" % correct_answer
+more_questions = True
+while more_questions:
+    question_answer = random.choice(os.listdir("questions"))
+    ask_question(load_question(question_answer), question_answer.lower())
+    if raw_input("Would you like another question? y/n ").lower() != "y":
+        more_questions = False
+        print "Thanks for playing!"
 
 
-ask_question(load_question(), "rabbit")
 
-print "Alright, let's try another"
 
-ask_question(second_question, "donkey")
 
 
 
